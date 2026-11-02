@@ -1,13 +1,10 @@
-function VendorCard() {
-  const vendor = {
-    name: 'Kafe Mahallah Ali',
-    location: 'Mahallah Ali, Block C',
-    openHours: '7:00 am - 10:00 pm',
-    isOpen: true,
-  }
-
+function VendorCard({ vendor, isSelected, onSelect }) {
   return (
-    <div className="card vendor">
+    <button
+      type="button"
+      className={isSelected ? 'card vendor selected' : 'card vendor'}
+      onClick={() => onSelect(vendor.id)}
+    >
       <div className="thumb">{vendor.name[0]}</div>
       <div>
         <h3>{vendor.name}</h3>
@@ -17,7 +14,7 @@ function VendorCard() {
           {vendor.isOpen ? 'Open now' : 'Closed'}
         </span>
       </div>
-    </div>
+    </button>
   )
 }
 
