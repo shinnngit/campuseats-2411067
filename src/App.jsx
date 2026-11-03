@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Header from './components/Header.jsx'
 import VendorCard from './components/VendorCard.jsx'
 import MenuList from './components/MenuList.jsx'
+import CartPage from './components/CartPage.jsx'
 import Footer from './components/Footer.jsx'
 import { Loading, ErrorMessage } from './components/Status.jsx'
 
@@ -12,6 +13,7 @@ function App() {
   const [reloadKey, setReloadKey] = useState(0)
   const [selectedVendorId, setSelectedVendorId] = useState(null)
   const [cart, setCart] = useState([])
+  const [view, setView] = useState('menu') // 'menu' | 'cart' | 'done'
 
   useEffect(() => {
     const controller = new AbortController()
@@ -38,13 +40,40 @@ function App() {
   }, [reloadKey])
 
   const selectedVendor = vendors.find((v) => v.id === selectedVendorId)
+  const cartCount = cart.reduce((sum, line) => sum + line.qty, 0)
 
   function handleAddToCart(item) {
-    setCart((prev) => [...prev, item])
+    setCart((prev) => {
+      const exists = prev.find((line) => line.item.id === item.id)
+      if (exists) {
+        return prev.map((line) =>
+          line.item.id === item.id ? { ...line, qty: line.qty + 1 } : line
+        )
+      }
+      return [...prev, { item, qty: 1 }]
+    })
+  }
+
+  function handleChangeQty(itemId, delta) {
+    setCart((prev) =>
+      prev
+        .map((line) =>
+          line.item.id === itemId ? { ...line, qty: line.qty + delta } : line
+        )
+        .filter((line) => line.qty > 0)
+    )
+  }
+
+  function handleRemove(itemId) {
+    setCart((prev) => prev.filter((line) => line.item.id !== itemId))
   }
 
   let content
-  if (loading) {
+  if (view === 'cart') {
+    content = (
+      <CartPage cart={cart} onChangeQty={handleChangeQty} onRemove={handleRemove} />
+    )
+  } else if (loading) {
     content = <Loading />
   } else if (error) {
     content = <ErrorMessage message={error} onRetry={() => setReloadKey((k) => k + 1)} />
@@ -70,7 +99,11 @@ function App() {
 
   return (
     <>
-      <Header cartCount={cart.length} />
+      <Header
+        cartCount={cartCount}
+        onShowMenu={() => setView('menu')}
+        onShowCart={() => setView('cart')}
+      />
       <main className="container">{content}</main>
       <Footer />
     </>
