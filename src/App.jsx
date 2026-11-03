@@ -14,6 +14,7 @@ function App() {
   const [selectedVendorId, setSelectedVendorId] = useState(null)
   const [cart, setCart] = useState([])
   const [view, setView] = useState('menu') // 'menu' | 'cart' | 'done'
+  const [lastOrder, setLastOrder] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -68,10 +69,33 @@ function App() {
     setCart((prev) => prev.filter((line) => line.item.id !== itemId))
   }
 
+  function handlePlaceOrder(details) {
+    const total = cart.reduce((sum, line) => sum + line.item.price * line.qty, 0)
+    setLastOrder({ ...details, total })
+    setCart([])
+    setView('done')
+  }
+
   let content
   if (view === 'cart') {
     content = (
-      <CartPage cart={cart} onChangeQty={handleChangeQty} onRemove={handleRemove} />
+      <CartPage
+        cart={cart}
+        onChangeQty={handleChangeQty}
+        onRemove={handleRemove}
+        onPlaceOrder={handlePlaceOrder}
+      />
+    )
+  } else if (view === 'done') {
+    content = (
+      <div className="card">
+        <h2>Order placed</h2>
+        <p>
+          Thanks, {lastOrder.name}! Pickup at {lastOrder.pickupTime} (Mahallah{' '}
+          {lastOrder.mahallah}).
+        </p>
+        <p>Total: RM {lastOrder.total.toFixed(2)}</p>
+      </div>
     )
   } else if (loading) {
     content = <Loading />
