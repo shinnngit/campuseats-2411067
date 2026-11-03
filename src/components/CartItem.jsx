@@ -1,5 +1,5 @@
-function CartItem({ line, onChangeQty, onRemove }) {
-  const { item, qty } = line
+function CartItem({ line, onChangeQty, onRemove, onChangeNote }) {
+  const { item, qty, note } = line
 
   return (
     <li className="cart-line">
@@ -16,6 +16,13 @@ function CartItem({ line, onChangeQty, onRemove }) {
       <button type="button" className="link danger" onClick={() => onRemove(item.id)}>
         Remove
       </button>
+      <textarea
+        className="cart-note"
+        rows="2"
+        placeholder="Note for this item (e.g. no onions)"
+        value={note}
+        onChange={(e) => onChangeNote(item.id, e.target.value)}
+      />
     </li>
   )
 }
