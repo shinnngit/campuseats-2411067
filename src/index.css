@@ -177,3 +177,7 @@ a.card:hover { border-color: var(--green-light); }
 .nav a.active { text-decoration: underline; }
 a.card.vendor { text-decoration: none; color: inherit; }
 .order ul { margin: 0.5rem 0; padding-left: 1.2rem; }
+.auth-page { max-width: 420px; margin: 2rem auto; }
+.btn-outline { background: #fff; color: #00685e; border: 1px solid #00685e; }
+.user-name { color: #fff; margin-left: 1rem; }
+.nav .link { margin-left: 1rem; }
