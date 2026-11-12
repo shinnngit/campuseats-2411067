@@ -26,3 +26,9 @@ Add a new section every week, before you tag. Did not use AI? Write "None" under
 - What I asked for: Help with custom hooks, cart context, React Router pages, and saving order notes with each order.
 - What I kept, changed or rejected, and why: Kept the structure from the lab sheet. Typed the code myself and tested direct links and refresh.
 - One thing the AI got wrong and how I fixed it: [write something real that happened]
+
+## Week 5
+- Tool(s): Claude
+- What I asked for: Help setting up Firebase, .env.local, AuthProvider, login/register pages, protected routes, and the notes feature for signed-in users.
+- What I kept, changed or rejected, and why: Kept the structure from the lab sheet. Typed the code myself and tested register, login, logout and the redirect.
+- One thing the AI got wrong and how I fixed it: It told me to test the new routes before I had made all the new files, so Vite said it could not resolve AuthProvider and ProtectedRoute. I checked my file tree and created the missing files.
